@@ -8,7 +8,7 @@
   :root{
     --navy:#163039;--navy2:#1d404c;--bignum:#214f5b;
     --teal:#168a8a;--teal-d:#0f7575;--orange:#e2962e;
-    --ink:#16323d;--gray:#5e6e76;--line:#e4ebec;--cardlt:#eef3f4;--white:#ffffff;
+    --ink:#16323d;--gray:#5e6e76;--line:#e4ebec;--cardlt:#eef3f4;--white:#ffffff;--purple:#8a5cc0;
   }
   *{box-sizing:border-box;margin:0;padding:0;}
   html,body{height:100%;}
@@ -76,6 +76,26 @@
   .intro-right .ava svg{width:60px;height:60px;stroke:#fff;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;}
   .intro-right .nm{font-size:29px;font-weight:900;z-index:2;}
   .intro-right .role{font-size:15px;color:rgba(255,255,255,.78);text-align:center;line-height:1.8;margin-top:12px;z-index:2;}
+  /* intro2（写真大きめ＋とんペディア） */
+  .intro2{padding:0;display:flex;}
+  .photo-side{width:46%;height:100%;overflow:hidden;flex:0 0 auto;}
+  .photo-side img{width:100%;height:100%;object-fit:cover;object-position:62% 24%;display:block;}
+  .info-side{flex:1;padding:46px 50px;display:flex;flex-direction:column;justify-content:center;}
+  .nm-line{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;margin:14px 0 12px;}
+  .nm-line .nm{font-size:33px;font-weight:900;color:var(--ink);}
+  .nm-line .role{font-size:14.5px;color:var(--gray);font-weight:600;}
+  .greet{font-size:16px;color:#3f5158;line-height:1.7;margin-bottom:22px;}
+  .tp-card{display:flex;gap:22px;background:var(--cardlt);border:1px solid #e6edee;border-radius:16px;padding:20px 22px;align-items:center;}
+  .tp-card .poster{width:128px;flex:0 0 auto;border-radius:10px;overflow:hidden;box-shadow:0 6px 16px rgba(0,0,0,.18);}
+  .tp-card .poster img{width:100%;display:block;}
+  .tp-content{flex:1;}
+  .tp-head{font-size:20px;font-weight:900;color:var(--purple);margin-bottom:15px;}
+  .tp-bullets{list-style:none;}
+  .tpb{display:flex;gap:11px;align-items:center;font-size:16.5px;font-weight:700;color:var(--ink);line-height:1.4;margin-bottom:12px;}
+  .tpb:last-child{margin-bottom:0;}
+  .tpb .ic{width:26px;height:26px;background:var(--purple);flex:0 0 auto;}
+  .tpb .ic svg{width:15px;height:15px;}
+  .tpb b{color:var(--orange);font-size:19px;}
 
   /* setup */
   .steps{display:flex;align-items:stretch;margin-top:34px;}
@@ -238,22 +258,24 @@
   </section>
 
   <!-- 3. ごあいさつ -->
-  <section class="slide s-split">
-    <div class="intro-left">
+  <section class="slide intro2">
+    <div class="photo-side"><img src="US_Yosemite.jpeg" alt="荒木 達亘"></div>
+    <div class="info-side">
       <div class="kick teal">INTRODUCTION</div>
-      <h2 class="head" style="margin-bottom:24px;">担当のごあいさつ</h2>
-      <p class="para">学部1年のとき峯岸社長にお声がけいただき、約3年ぶりにこの会へ戻ってまいりました。</p>
-      <p class="para">学生時代を通じてプロダクト開発を続け、東北大学向けサービス <b>「とんペディア」</b> を立ち上げました。</p>
-      <div class="stat">
-        <div class="big">約95%</div>
-        <div><div class="st-t">新入生の約95%が利用</div><div class="st-d">学生の“当たり前”になるまで育てた経験から、生成AIをできる限り分かりやすくお伝えします。</div></div>
+      <h2 class="head">担当のごあいさつ</h2>
+      <div class="nm-line"><span class="nm">荒木 達亘</span><span class="role">一般社団法人とんペディア 理事 ／ 東北大学 経済学部 4年</span></div>
+      <p class="greet">学部1年のとき峯岸社長にお声がけいただき、約3年ぶりにこの会へ。学生時代を通じてプロダクト開発を続けてきました。</p>
+      <div class="tp-card">
+        <div class="poster"><img src="tompedia.png" alt="とんペディア"></div>
+        <div class="tp-content">
+          <div class="tp-head">立ち上げたサービス「とんペディア」</div>
+          <ul class="tp-bullets">
+            <li class="tpb"><span class="ic"><svg><use href="#i-check"/></svg></span>東北大生が、東北大生のためにつくったアプリ</li>
+            <li class="tpb"><span class="ic"><svg><use href="#i-check"/></svg></span>新入生の<b>95%</b>が使用</li>
+            <li class="tpb"><span class="ic"><svg><use href="#i-check"/></svg></span>学部1年生のときに立ち上げ</li>
+          </ul>
+        </div>
       </div>
-    </div>
-    <div class="intro-right">
-      <span class="blob blobr"></span>
-      <div class="ava"><svg><use href="#i-user"/></svg></div>
-      <div class="nm">荒木 達亘</div>
-      <div class="role">一般社団法人とんペディア 理事<br>東北大学 経済学部 4年</div>
     </div>
     <div class="pg">03</div>
   </section>
