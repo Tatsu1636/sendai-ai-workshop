@@ -178,6 +178,24 @@
   .pbadge.teal{background:var(--teal);}.pbadge.orange{background:var(--orange);}
   .pstep p{font-size:14.5px;color:var(--gray);line-height:1.55;}
   .ptip{background:#fbf1de;border-radius:10px;padding:13px 16px;font-size:14px;color:#7a5a22;line-height:1.55;font-weight:600;}
+  /* 応用編：Before/After & プロンプト帯 */
+  .ba{display:grid;grid-template-columns:1fr 40px 1fr;gap:14px;align-items:stretch;margin-top:18px;}
+  .bapanel{border:1.5px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;}
+  .bapanel .bhead{font-size:13.5px;font-weight:800;padding:10px 15px;color:#fff;}
+  .bapanel.before .bhead{background:#8a98a0;}
+  .bapanel.after .bhead{background:var(--teal);}
+  .bapanel .bbody{padding:14px 16px;font-size:13.5px;line-height:1.75;color:#3a4a50;flex:1;}
+  .bapanel.after .bbody{background:#f3f8f8;}
+  .bapanel .bbody .bcl{font-weight:800;color:var(--ink);}
+  .baarrow{display:flex;align-items:center;justify-content:center;color:var(--orange);}
+  .baarrow svg{width:30px;height:30px;stroke:currentColor;stroke-width:2.6;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+  .mbprompt{display:flex;align-items:center;gap:20px;background:var(--navy);border-radius:14px;padding:16px 20px;margin-top:18px;}
+  .mbprompt .mp-l{flex:1;}
+  .mbprompt .mp-tag{display:inline-flex;align-items:center;gap:7px;background:var(--orange);color:#fff;font-size:12.5px;font-weight:800;padding:5px 12px;border-radius:999px;margin-bottom:9px;}
+  .mbprompt .mp-tag svg{width:14px;height:14px;stroke:#fff;stroke-width:2;fill:none;}
+  .mbprompt .mp-txt{color:#eef6f6;font-size:13.5px;line-height:1.6;}
+  .copybtn.mid{background:var(--orange);font-size:17px;padding:15px 22px;white-space:nowrap;box-shadow:0 4px 12px rgba(226,150,46,.45);}
+  .copybtn.mid svg{width:20px;height:20px;}
 
   /* safety */
   .scardrow{display:flex;gap:22px;margin-top:38px;}
@@ -231,6 +249,7 @@
   <symbol id="i-mail" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></symbol>
   <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></symbol>
   <symbol id="i-flag" viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><path d="M4 22v-7"/></symbol>
+  <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol>
   <symbol id="i-fork" viewBox="0 0 24 24"><path d="M3 2v7a2 2 0 0 0 2 2h0a2 2 0 0 0 2-2V2M5 2v20M21 15V2a4 4 0 0 0-4 4v5a2 2 0 0 0 2 2h2v7"/></symbol>
   <symbol id="i-clip" viewBox="0 0 24 24"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></symbol>
   <symbol id="i-arrow" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
@@ -535,7 +554,92 @@
     <div class="pg">15</div>
   </section>
 
-  <!-- 16. 安全に使う -->
+  <!-- 16. 応用編 イントロ -->
+  <section class="slide s-dark">
+    <div class="kick orange">ADVANCED ・ 応用編</div>
+    <h2 class="head">おまけ：私（荒木）のふだんの使い方</h2>
+    <div class="sub">ここからは市役所の役は関係なし。私が普段、自分の仕事でAIをどう使っているかを3つ紹介します。社長業にもそのまま応用できます。</div>
+    <div class="dcardrow">
+      <div class="dcard"><span class="ic teal lg"><svg><use href="#i-calendar"/></svg></span><h3>① 日程調整</h3><p>カレンダーと連携し、全員の空き時間を一瞬で。</p></div>
+      <div class="dcard"><span class="ic teal lg"><svg><use href="#i-bulb"/></svg></span><h3>② 頼み方を作る</h3><p>AIに「AIへの頼み方」を考えてもらう。</p></div>
+      <div class="dcard"><span class="ic orange lg"><svg><use href="#i-file"/></svg></span><h3>③ 議事録づくり</h3><p>録音の文字起こしを、議事録に変換。</p></div>
+    </div>
+    <div class="pg dark">16</div>
+  </section>
+
+  <!-- 17. 応用① 日程調整 -->
+  <section class="slide s-white dense">
+    <div class="kick orange">応用① ・ 日程調整</div>
+    <h2 class="head">カレンダーと連携して、空き日程を一瞬で</h2>
+    <div class="exgrid">
+      <div>
+        <div class="pcard">
+          <span class="ptag"><svg><use href="#i-clip"/></svg>コピペ用プロンプト</span>
+          <div class="prompt"><div class="bar"></div><div class="ptxt">あなたは日程調整アシスタントです。私と参加メンバーのGoogleカレンダーを確認し、直近2週間の平日 9:00〜19:00 で、全員が30分以上あいている時間を一覧で出してください。最後に「この候補で大丈夫ですか？」と一言添えてください。</div></div>
+        </div>
+        <div class="copyhint">👇 ここでコピーできます（押すだけ）</div>
+        <button class="copybtn big" data-k="app1"><svg><use href="#i-clip"/></svg>ここをクリックしてコピー</button>
+      </div>
+      <div class="proc">
+        <div class="mh">私の使い方</div>
+        <div class="pstep"><span class="pbadge teal">連携</span><p>AIとGoogleカレンダーをつないでおく（最初に一度だけ）。</p></div>
+        <div class="pstep"><span class="pbadge orange">入力</span><p>「荒木と〇〇さんで来週」と名前を打つだけ。</p></div>
+        <div class="ptip">💡 全員の空き時間が一覧で出るので、そのまま相手に連絡できます。</div>
+      </div>
+    </div>
+    <div class="pg">17</div>
+  </section>
+
+  <!-- 18. 応用② 頼み方を作ってもらう -->
+  <section class="slide s-white dense">
+    <div class="kick orange">応用② ・ AIに頼み方を作ってもらう</div>
+    <h2 class="head">うまく頼めない時は、頼み方ごと聞く</h2>
+    <div class="exgrid">
+      <div>
+        <div class="pcard">
+          <span class="ptag"><svg><use href="#i-clip"/></svg>コピペ用プロンプト</span>
+          <div class="prompt"><div class="bar"></div><div class="ptxt">これからAIに「〇〇」をお願いしたいです。うまく伝わる頼み方（プロンプト）を、私の代わりに考えて、そのままコピーして使える形で書いてください。</div></div>
+          <div class="pembed">※「〇〇」に、やりたいことを入れてください</div>
+        </div>
+        <div class="copyhint">👇 ここでコピーできます（押すだけ）</div>
+        <button class="copybtn big" data-k="app2"><svg><use href="#i-clip"/></svg>ここをクリックしてコピー</button>
+      </div>
+      <div class="proc">
+        <div class="mh">私の使い方</div>
+        <div class="pstep"><span class="pbadge teal">困ったら</span><p>「どう頼めばいいか分からない」時に使う。</p></div>
+        <div class="pstep"><span class="pbadge orange">流れ</span><p>やりたいことを書く → AIが頼み方を作る → それをそのまま使う。</p></div>
+        <div class="ptip">💡 AIに「AIへの頼み方」を聞く。これが一番ラクで、失敗しません。</div>
+      </div>
+    </div>
+    <div class="pg">18</div>
+  </section>
+
+  <!-- 19. 応用③ 議事録づくり -->
+  <section class="slide s-white dense">
+    <div class="kick orange">応用③ ・ 議事録づくり</div>
+    <h2 class="head">録音の文字起こしを、議事録に変える</h2>
+    <div class="ba">
+      <div class="bapanel before">
+        <div class="bhead">録音の文字起こし（そのまま）</div>
+        <div class="bbody">発話者1：よいしょ、本当にやるべきプロダクトを見つけたら、めっちゃ熱中できると思うんだけど<br>発話者2：そんな簡単に見つかるものじゃないんだよね<br>発話者1：でもやってると面白い。見つかったら嬉しいんだよな…</div>
+      </div>
+      <div class="baarrow"><svg><use href="#i-arrow"/></svg></div>
+      <div class="bapanel after">
+        <div class="bhead">AIがつくった議事録</div>
+        <div class="bbody"><span class="bcl">■ プロダクト開発について</span><br>・本当に熱中できるものは、簡単には見つからない<br>・自分が「面白い」と思える物に関わる方が力を発揮できる<br>・思いつかない時は、面白い人のアイデアに乗るのも手</div>
+      </div>
+    </div>
+    <div class="mbprompt">
+      <div class="mp-l">
+        <span class="mp-tag"><svg><use href="#i-clip"/></svg>議事録プロンプト（コピーして使えます）</span>
+        <div class="mp-txt">次の会議の文字起こしを議事録にまとめてください。テーマごとに見出し＋要点を箇条書き、最後に「決まったこと／次にやること」を。（下に文字起こしを貼り付け）</div>
+      </div>
+      <button class="copybtn mid" data-k="app3"><svg><use href="#i-clip"/></svg>コピー</button>
+    </div>
+    <div class="pg">19</div>
+  </section>
+
+  <!-- 20. 安全に使う -->
   <section class="slide s-white">
     <div class="kick orange">SAFETY</div>
     <h2 class="head">安全に使うための3つの約束</h2>
@@ -545,7 +649,7 @@
       <div class="scard"><span class="gnum">2</span><span class="ic orange lg"><svg><use href="#i-alert"/></svg></span><h3>AIは時々“嘘”をつく</h3><p>もっともらしく数字を間違えることがある。内容は必ず確認する。</p></div>
       <div class="scard"><span class="gnum">3</span><span class="ic orange lg"><svg><use href="#i-user"/></svg></span><h3>最後は人が判断する</h3><p>AIはあくまで道具。決定と責任は人が持つ。</p></div>
     </div>
-    <div class="pg">16</div>
+    <div class="pg">20</div>
   </section>
 
   <!-- 17. まとめ＆懇親会 -->
@@ -565,14 +669,14 @@
       </div>
     </div>
     <div class="tyfoot"><b>担当　一般社団法人とんペディア 理事　荒木 達亘</b></div>
-    <div class="pg dark">17</div>
+    <div class="pg dark">21</div>
   </section>
 
 </div>
 
 <div class="navbar">
   <button class="prev" id="prev"><svg style="transform:scaleX(-1)"><use href="#i-arrow"/></svg>もどる</button>
-  <span class="navcount" id="navcount">1 / 17</span>
+  <span class="navcount" id="navcount">1 / 21</span>
   <button class="next" id="next">すすむ<svg><use href="#i-arrow"/></svg></button>
 </div>
 <div class="hint">キーボードの ← → でも動きます ／ F で全画面</div>
@@ -665,7 +769,19 @@
     ex1m:MAT.ex1, ex1p:INSTR.ex1+MAT.ex1,
     ex2m:MAT.ex2, ex2p:INSTR.ex2+MAT.ex2,
     ex3m:MAT.ex3, ex3p:INSTR.ex3+MAT.ex3,
-    ex4m:MAT.ex4, ex4p:INSTR.ex4+MAT.ex4
+    ex4m:MAT.ex4, ex4p:INSTR.ex4+MAT.ex4,
+    app1:`あなたは日程調整アシスタントです。
+私と参加メンバーのGoogleカレンダーを確認し、直近2週間の平日 9:00〜19:00 で、全員が30分以上あいている時間を一覧で出してください。
+最後に「この候補で大丈夫ですか？」と一言添えてください。`,
+    app2:`これからAIに「〇〇」をお願いしたいです。
+うまく伝わる頼み方（プロンプト）を、私の代わりに考えて、そのままコピーして使える形で書いてください。
+※「〇〇」に、やりたいことを入れてください`,
+    app3:`次の会議の文字起こしを、議事録にまとめてください。
+・話のテーマごとに見出しをつける
+・要点を箇条書きにする
+・最後に「決まったこと」「次にやること」をまとめる
+
+（この下に文字起こしを貼り付け）`
   };
   const toast=document.getElementById('toast');
   let tT;
@@ -677,6 +793,7 @@
     else{fallback(txt);ok();}
   }
   document.querySelectorAll('.copybtn').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();doCopy(COPY[b.dataset.k],b);}));
+  show(0);
 </script>
 </body>
 </html>
