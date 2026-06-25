@@ -152,10 +152,13 @@
   /* copy ボタン */
   .copybtn{display:inline-flex;align-items:center;gap:9px;border:none;cursor:pointer;font-family:inherit;font-weight:800;border-radius:10px;transition:.15s;color:#fff;}
   .copybtn svg{stroke:#fff;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;}
-  .copybtn.sm{background:var(--teal);font-size:13px;padding:8px 14px;}
-  .copybtn.sm svg{width:16px;height:16px;}
-  .copybtn.big{background:var(--orange);font-size:18px;padding:16px 22px;width:100%;justify-content:center;box-shadow:0 6px 16px rgba(226,150,46,.32);margin-top:16px;}
-  .copybtn.big svg{width:22px;height:22px;}
+  .copybtn.sm{background:var(--teal);font-size:15px;padding:11px 20px;}
+  .copybtn.sm svg{width:18px;height:18px;}
+  .copyhint{font-size:16px;font-weight:900;color:var(--orange);margin-top:18px;margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+  .copybtn.big{background:var(--orange);font-size:22px;padding:22px 26px;width:100%;justify-content:center;box-shadow:0 6px 16px rgba(226,150,46,.4);animation:cpulse 1.8s ease-in-out infinite;}
+  .copybtn.big svg{width:26px;height:26px;}
+  .copybtn.big.done{animation:none;}
+  @keyframes cpulse{0%,100%{box-shadow:0 6px 16px rgba(226,150,46,.35);}50%{box-shadow:0 8px 30px rgba(226,150,46,.75);}}
   .copybtn.done{background:var(--teal)!important;box-shadow:none;}
   .copybtn:hover{filter:brightness(1.06);}
 
@@ -199,10 +202,15 @@
   .tyfoot b{color:rgba(255,255,255,.85);font-weight:700;margin-right:18px;}
 
   /* ナビ */
-  .navbtns{position:fixed;bottom:10px;left:50%;transform:translateX(-50%);display:flex;gap:10px;z-index:50;}
-  .navbtns button{width:38px;height:38px;border-radius:50%;border:none;background:rgba(255,255,255,.14);color:#fff;font-size:20px;cursor:pointer;line-height:1;}
-  .navbtns button:hover{background:rgba(255,255,255,.28);}
-  .hint{position:fixed;right:12px;bottom:8px;font-size:11px;color:rgba(255,255,255,.28);z-index:50;}
+  .navbar{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);display:flex;align-items:center;gap:14px;z-index:60;background:rgba(22,48,57,.94);padding:10px 14px;border-radius:999px;box-shadow:0 10px 30px rgba(0,0,0,.4);}
+  .navbar button{display:flex;align-items:center;gap:10px;font-family:inherit;font-size:20px;font-weight:900;border:none;border-radius:999px;padding:15px 34px;cursor:pointer;color:#fff;transition:.15s;}
+  .navbar .prev{background:rgba(255,255,255,.18);}
+  .navbar .prev:hover{background:rgba(255,255,255,.32);}
+  .navbar .next{background:var(--orange);box-shadow:0 4px 14px rgba(226,150,46,.5);}
+  .navbar .next:hover{filter:brightness(1.08);}
+  .navbar button svg{width:22px;height:22px;stroke:#fff;stroke-width:2.8;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+  .navcount{color:#fff;font-weight:900;font-size:18px;min-width:64px;text-align:center;letter-spacing:.05em;}
+  .hint{position:fixed;left:16px;bottom:24px;font-size:12px;color:rgba(255,255,255,.32);z-index:50;}
   .toast{position:fixed;top:18px;left:50%;transform:translateX(-50%) translateY(-80px);background:var(--teal);color:#fff;font-weight:800;font-size:15px;padding:12px 22px;border-radius:999px;z-index:99;opacity:0;transition:.3s;box-shadow:0 8px 24px rgba(0,0,0,.25);}
   .toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
 </style>
@@ -382,7 +390,8 @@
           <div class="prompt"><div class="bar"></div><div class="ptxt">あなたは仙台市の新音楽ホール整備の担当者です。地元企業の社長から下のメールが届きました。丁寧で温かく、今後も連携していきたい気持ちが伝わる返信を、300字くらいで書いてください。かしこまりすぎず、でも失礼のないトーンでお願いします。</div></div>
           <div class="pembed">＋【届いたメール】＝前のスライドの本文（コピー時に自動で入ります）</div>
         </div>
-        <button class="copybtn big" data-k="ex1p"><svg><use href="#i-clip"/></svg>プロンプトをまるごとコピー（素材も入っています）</button>
+        <div class="copyhint">👇 ここでコピーできます（押すだけ）</div>
+        <button class="copybtn big" data-k="ex1p"><svg><use href="#i-clip"/></svg>ここをクリックしてコピー</button>
       </div>
       <div class="proc">
         <div class="mh">進め方</div>
@@ -423,7 +432,8 @@
           <div class="prompt"><div class="bar"></div><div class="ptxt">あなたは仙台市の新音楽ホール整備の担当者です。下の協定書について、(1)忙しい上司向けに3行で要約し、(2)市にとって不利になりそう・注意すべき点を3つ挙げ、(3)難しい専門用語を中学生にも分かる言葉で言い換えてください。</div></div>
           <div class="pembed">＋【協定書】＝前のスライドの本文（コピー時に自動で入ります）</div>
         </div>
-        <button class="copybtn big" data-k="ex2p"><svg><use href="#i-clip"/></svg>プロンプトをまるごとコピー（素材も入っています）</button>
+        <div class="copyhint">👇 ここでコピーできます（押すだけ）</div>
+        <button class="copybtn big" data-k="ex2p"><svg><use href="#i-clip"/></svg>ここをクリックしてコピー</button>
       </div>
       <div class="proc">
         <div class="mh">進め方</div>
@@ -464,7 +474,8 @@
           <div class="prompt"><div class="bar"></div><div class="ptxt">あなたは仙台市の新音楽ホール整備の担当者です。来週、市民説明会があります。下の概要をもとに、建設に反対の立場の市民から出そうな厳しい質問を10個予想し、それぞれに誠実で分かりやすい回答案を付けてください。回答は、ごまかさず、相手の不安に寄り添うトーンでお願いします。</div></div>
           <div class="pembed">＋【概要】＝前のスライドの本文（コピー時に自動で入ります）</div>
         </div>
-        <button class="copybtn big" data-k="ex3p"><svg><use href="#i-clip"/></svg>プロンプトをまるごとコピー（素材も入っています）</button>
+        <div class="copyhint">👇 ここでコピーできます（押すだけ）</div>
+        <button class="copybtn big" data-k="ex3p"><svg><use href="#i-clip"/></svg>ここをクリックしてコピー</button>
       </div>
       <div class="proc">
         <div class="mh">進め方</div>
@@ -511,7 +522,8 @@
           <div class="prompt"><div class="bar"></div><div class="ptxt">あなたは仙台市の新音楽ホール整備の担当者です。下の市民ディスカッションのメモから、賛成意見と反対意見を「論点ごと」に整理して、表にまとめてください。表の列は「論点／賛成の意見／反対の意見」にしてください。</div></div>
           <div class="pembed">＋【メモ】＝前のスライドの本文（コピー時に自動で入ります）</div>
         </div>
-        <button class="copybtn big" data-k="ex4p"><svg><use href="#i-clip"/></svg>プロンプトをまるごとコピー（素材も入っています）</button>
+        <div class="copyhint">👇 ここでコピーできます（押すだけ）</div>
+        <button class="copybtn big" data-k="ex4p"><svg><use href="#i-clip"/></svg>ここをクリックしてコピー</button>
       </div>
       <div class="proc">
         <div class="mh">進め方</div>
@@ -558,8 +570,12 @@
 
 </div>
 
-<div class="navbtns"><button id="prev">‹</button><button id="next">›</button></div>
-<div class="hint">← → / スペース で進む　・　F で全画面</div>
+<div class="navbar">
+  <button class="prev" id="prev"><svg style="transform:scaleX(-1)"><use href="#i-arrow"/></svg>もどる</button>
+  <span class="navcount" id="navcount">1 / 17</span>
+  <button class="next" id="next">すすむ<svg><use href="#i-arrow"/></svg></button>
+</div>
+<div class="hint">キーボードの ← → でも動きます ／ F で全画面</div>
 <div class="toast" id="toast">✓ コピーしました！ ChatGPTに貼り付けてください</div>
 
 <script>
@@ -569,7 +585,8 @@
 
   const slides=[...document.querySelectorAll('.slide')];
   let i=0;
-  function show(n){i=Math.max(0,Math.min(slides.length-1,n));slides.forEach((s,k)=>s.classList.toggle('active',k===i));}
+  function show(n){i=Math.max(0,Math.min(slides.length-1,n));slides.forEach((s,k)=>s.classList.toggle('active',k===i));
+    const c=document.getElementById('navcount');if(c)c.textContent=(i+1)+' / '+slides.length;}
   addEventListener('keydown',e=>{
     if(['ArrowRight','ArrowDown',' ','PageDown','Enter'].includes(e.key)){e.preventDefault();show(i+1);}
     else if(['ArrowLeft','ArrowUp','PageUp','Backspace'].includes(e.key)){e.preventDefault();show(i-1);}
@@ -579,7 +596,7 @@
   document.getElementById('prev').onclick=e=>{e.stopPropagation();show(i-1);};
   document.getElementById('next').onclick=e=>{e.stopPropagation();show(i+1);};
   addEventListener('click',e=>{
-    if(e.target.closest('.copybtn,.matbox,.matbody,.pcard,button,a,.navbtns')) return;
+    if(e.target.closest('.copybtn,.matbox,.matbody,.pcard,button,a,.navbar')) return;
     e.clientX<innerWidth*0.25?show(i-1):show(i+1);
   });
 
