@@ -199,6 +199,14 @@
   .mbprompt .mp-txt{color:#eef6f6;font-size:13.5px;line-height:1.6;}
   .copybtn.mid{background:var(--orange);font-size:17px;padding:15px 22px;white-space:nowrap;box-shadow:0 4px 12px rgba(226,150,46,.45);}
   .copybtn.mid svg{width:20px;height:20px;}
+  /* 手帳の写真よみとり */
+  .di-photo{border:1.5px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:0 6px 18px rgba(0,0,0,.12);background:#f3f8f8;}
+  .di-photo img{width:100%;max-height:330px;object-fit:contain;display:block;}
+  .di-cap{font-size:12.5px;color:var(--gray);margin-top:8px;text-align:center;font-weight:600;}
+  .readbox{background:#eef5f5;border:1px solid #d8e6e6;border-radius:12px;padding:14px 16px;margin-top:16px;}
+  .readhead{font-size:14.5px;font-weight:800;color:var(--teal-d);margin-bottom:10px;}
+  .readtags{display:flex;flex-wrap:wrap;gap:8px;}
+  .readtags span{background:#fff;border:1px solid #cfe0e0;color:var(--ink);font-size:14px;font-weight:700;padding:7px 13px;border-radius:999px;}
   /* 応用イントロ：3カード（暗背景） */
   .dcardrow{display:flex;gap:22px;margin-top:40px;}
   .dcard{flex:1;background:var(--navy2);border-radius:16px;padding:30px 26px;}
@@ -570,32 +578,38 @@
     <h2 class="head">おまけ：私（荒木）のふだんの使い方</h2>
     <div class="sub">ここからは市役所の役は関係なし。私が普段、自分の仕事でAIをどう使っているかを3つ紹介します。社長業にもそのまま応用できます。</div>
     <div class="dcardrow">
-      <div class="dcard"><span class="ic teal lg"><svg><use href="#i-calendar"/></svg></span><h3>① 日程調整</h3><p>カレンダーと連携し、全員の空き時間を一瞬で。</p></div>
+      <div class="dcard"><span class="ic teal lg"><svg><use href="#i-calendar"/></svg></span><h3>① 予定の管理</h3><p>カレンダー連携＋手帳の写真から予定を取り込み。</p></div>
       <div class="dcard"><span class="ic teal lg"><svg><use href="#i-bulb"/></svg></span><h3>② 頼み方を作る</h3><p>AIに「AIへの頼み方」を考えてもらう。</p></div>
       <div class="dcard"><span class="ic orange lg"><svg><use href="#i-file"/></svg></span><h3>③ 議事録づくり</h3><p>録音の文字起こしを、議事録に変換。</p></div>
     </div>
     <div class="pg dark">16</div>
   </section>
 
-  <!-- 17. 応用① 日程調整 -->
+  <!-- 17. 応用① 予定の管理 -->
   <section class="slide s-white dense">
-    <div class="kick orange">応用① ・ 日程調整</div>
-    <h2 class="head">カレンダーと連携して、空き日程を一瞬で</h2>
+    <div class="kick orange">応用① ・ 予定の管理</div>
+    <h2 class="head">手書きの手帳を、写真で撮るだけ</h2>
     <div class="exgrid">
       <div>
-        <div class="pcard">
-          <span class="ptag"><svg><use href="#i-clip"/></svg>コピペ用プロンプト</span>
-          <div class="prompt"><div class="bar"></div><div class="ptxt">あなたは日程調整アシスタントです。私と参加メンバーのGoogleカレンダーを確認し、直近2週間の平日 9:00〜19:00 で、全員が30分以上あいている時間を一覧で出してください。最後に「この候補で大丈夫ですか？」と一言添えてください。</div></div>
-        </div>
-        <div class="copyhint">👇 ここでコピーできます（押すだけ）</div>
-        <button class="copybtn big" data-k="app1"><svg><use href="#i-clip"/></svg>ここをクリックしてコピー</button>
+        <div class="di-photo"><img src="techo.jpg" alt="手書きの手帳"></div>
+        <div class="di-cap">▲ この手書きの手帳を、撮って送るだけ</div>
       </div>
       <div class="proc">
         <div class="mh">私の使い方</div>
-        <div class="pstep"><span class="pbadge teal">連携</span><p>AIとGoogleカレンダーをつないでおく（最初に一度だけ）。</p></div>
-        <div class="pstep"><span class="pbadge orange">入力</span><p>「荒木と〇〇さんで来週」と名前を打つだけ。</p></div>
-        <div class="ptip">💡 全員の空き時間が一覧で出るので、そのまま相手に連絡できます。</div>
+        <div class="pstep"><span class="pbadge teal">連携</span><p>ChatGPTとGoogleカレンダーはつなげます。私の予定を読んで、空き時間や予定を教えてくれます。</p></div>
+        <div class="pstep"><span class="pbadge orange">写真</span><p>手書きの手帳を写真で撮って送るだけ。AIが中身を読み取り、予定を一覧にしてくれます。</p></div>
+        <div class="readbox">
+          <div class="readhead">📷 この写真から読み取れること</div>
+          <div class="readtags"><span>日付・時間</span><span>会議・予定</span><span>やること・締切</span><span>メモ</span></div>
+        </div>
       </div>
+    </div>
+    <div class="mbprompt">
+      <div class="mp-l">
+        <span class="mp-tag"><svg><use href="#i-clip"/></svg>手帳よみとりプロンプト（コピーして使えます）</span>
+        <div class="mp-txt">この手帳の写真から予定とやることを読み取り、日付・時間つきの一覧にしてください。そのまま私のGoogleカレンダーに追加できる形で。</div>
+      </div>
+      <button class="copybtn mid" data-k="app1"><svg><use href="#i-clip"/></svg>コピー</button>
     </div>
     <div class="pg">17</div>
   </section>
@@ -795,9 +809,10 @@
     ex2m:MAT.ex2, ex2p:INSTR.ex2+MAT.ex2,
     ex3m:MAT.ex3, ex3p:INSTR.ex3+MAT.ex3,
     ex4m:MAT.ex4, ex4p:INSTR.ex4+MAT.ex4,
-    app1:`あなたは日程調整アシスタントです。
-私と参加メンバーのGoogleカレンダーを確認し、直近2週間の平日 9:00〜19:00 で、全員が30分以上あいている時間を一覧で出してください。
-最後に「この候補で大丈夫ですか？」と一言添えてください。`,
+    app1:`この手帳（手書き）の写真から、予定とやることを読み取ってください。
+・日付と時間つきの一覧にする
+・「予定」と「やること（ToDo）」を分ける
+そのまま私のGoogleカレンダーに追加できる形でお願いします。`,
     app2:`これからAIに「〇〇」をお願いしたいです。
 うまく伝わる頼み方（プロンプト）を、私の代わりに考えて、そのままコピーして使える形で書いてください。
 ※「〇〇」に、やりたいことを入れてください`,
