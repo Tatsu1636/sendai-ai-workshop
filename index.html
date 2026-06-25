@@ -184,7 +184,10 @@
   .bapanel .bhead{font-size:13.5px;font-weight:800;padding:10px 15px;color:#fff;}
   .bapanel.before .bhead{background:#8a98a0;}
   .bapanel.after .bhead{background:var(--teal);}
-  .bapanel .bbody{padding:14px 16px;font-size:13.5px;line-height:1.75;color:#3a4a50;flex:1;}
+  .bapanel .bbody{padding:14px 16px;font-size:13px;line-height:1.75;color:#3a4a50;flex:1;max-height:300px;overflow-y:auto;}
+  .bapanel .bbody::-webkit-scrollbar{width:8px;}
+  .bapanel .bbody::-webkit-scrollbar-thumb{background:#cdd9db;border-radius:8px;}
+  .bapanel .bbody p{margin-bottom:7px;}
   .bapanel.after .bbody{background:#f3f8f8;}
   .bapanel .bbody .bcl{font-weight:800;color:var(--ink);}
   .baarrow{display:flex;align-items:center;justify-content:center;color:var(--orange);}
@@ -627,13 +630,28 @@
     <h2 class="head">録音の文字起こしを、議事録に変える</h2>
     <div class="ba">
       <div class="bapanel before">
-        <div class="bhead">録音の文字起こし（そのまま）</div>
-        <div class="bbody">発話者1：よいしょ、本当にやるべきプロダクトを見つけたら、めっちゃ熱中できると思うんだけど<br>発話者2：そんな簡単に見つかるものじゃないんだよね<br>発話者1：でもやってると面白い。見つかったら嬉しいんだよな…</div>
+        <div class="bhead">録音の文字起こし（そのまま・スクロール可）</div>
+        <div class="bbody">
+          <p>発話者1：よいしょ、本当にやるべきプロダクトを見つけたら、めっちゃ熱中できると思うんだけど</p>
+          <p>発話者2：レンズとかの経験で思ったけど、そんな簡単に見つかるものじゃないんだよね</p>
+          <p>発話者1：でもやってると面白いんだよ。見つかったら嬉しいんだよな。大企業がやってる基礎的なプロダクトって、なんかつまらなくて…</p>
+          <p>発話者2：いやー、僕はのんびりしてるだけ。アクセル踏んでなくても人生楽しいからな</p>
+          <p>発話者1：面白いプロダクトを一回作ってるところに入っちゃうと、自分のやりたいことができなくなるからさ</p>
+          <p>発話者2：じゃあ、思いつかない時はどうするの？</p>
+          <p>発話者1：思いつかない時は、他の人で「この人の方が面白いな」と思ったら、それに乗っかるのもありかなって</p>
+          <p>発話者1：YouTubeとかも、初期のユーザー解析はめっちゃ失敗したけど、思わぬところにニーズがあったから続いた。予想と全然違うユーザーが使い始めたんだよね</p>
+          <p>発話者2：ユーザー調査って大事なんだな</p>
+          <p>発話者1：こだわりすぎてもいけないけどね。「これで行く」っていうビジョンを示す人間、推進力が必要なんだろうな</p>
+        </div>
       </div>
       <div class="baarrow"><svg><use href="#i-arrow"/></svg></div>
       <div class="bapanel after">
-        <div class="bhead">AIがつくった議事録</div>
-        <div class="bbody"><span class="bcl">■ プロダクト開発について</span><br>・本当に熱中できるものは、簡単には見つからない<br>・自分が「面白い」と思える物に関わる方が力を発揮できる<br>・思いつかない時は、面白い人のアイデアに乗るのも手</div>
+        <div class="bhead">AIがつくった議事録（スクロール可）</div>
+        <div class="bbody">
+          <p><span class="bcl">■ プロダクト開発とキャリア</span><br>・本当に熱中できるプロダクトは、簡単には見つからない<br>・自分が「面白い」と思える物に関わる方が、力を発揮しやすい<br>・思いつかない時は、面白いアイデアを持つ人に乗るのも有効</p>
+          <p><span class="bcl">■ ユーザー調査と推進力</span><br>・初期のターゲット設定が外れても、想定外の層にニーズが見つかり成功することがある<br>・「誰も使わない」と言われても、長期的に必要と信じるなら進み続ける推進力が要る<br>・困難でも方向を示し、牽引する存在（CEO的役割）が不可欠</p>
+          <p><span class="bcl">■ 「人間らしさ」を保つプロダクト</span><br>・ユーザーの時間を奪うだけのものは作りたくない<br>・強制（プッシュ型）ではなく、自然に引きつける（プル型）設計が理想<br>・必ずしも「アプリ」という形にこだわる必要はない</p>
+        </div>
       </div>
     </div>
     <div class="mbprompt">
@@ -707,7 +725,7 @@
   document.getElementById('prev').onclick=e=>{e.stopPropagation();show(i-1);};
   document.getElementById('next').onclick=e=>{e.stopPropagation();show(i+1);};
   addEventListener('click',e=>{
-    if(e.target.closest('.copybtn,.matbox,.matbody,.pcard,button,a,.navbar')) return;
+    if(e.target.closest('.copybtn,.matbox,.matbody,.pcard,.ba,.mbprompt,button,a,.navbar')) return;
     e.clientX<innerWidth*0.25?show(i-1):show(i+1);
   });
 
