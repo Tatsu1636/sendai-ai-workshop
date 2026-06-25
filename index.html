@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>社長のための生成AI入門 ― 仙台市 音楽ホール整備ワーク</title>
+<style>
+  :root{
+    --navy:#163039;--navy2:#1d404c;--bignum:#214f5b;
+    --teal:#168a8a;--teal-d:#0f7575;--orange:#e2962e;
+    --ink:#16323d;--gray:#5e6e76;--line:#e4ebec;--cardlt:#eef3f4;--white:#ffffff;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{height:100%;}
+  body{background:#0c1d24;display:flex;align-items:center;justify-content:center;height:100vh;overflow:hidden;
+    font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic","YuGothic","Noto Sans JP","Meiryo",sans-serif;color:var(--ink);}
+  .stage{width:1280px;height:720px;position:relative;transform-origin:center center;}
+
+  .slide{position:absolute;inset:0;display:none;overflow:hidden;background:var(--white);}
+  .slide.active{display:block;animation:fade .4s ease;}
+  @keyframes fade{from{opacity:0}to{opacity:1}}
+  .s-white{padding:52px 64px;}
+  .s-dark{background:var(--navy);color:#fff;padding:52px 64px;}
+  .dense{padding:40px 56px;}
+
+  .kick{font-size:14px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;margin-bottom:12px;}
+  .kick.teal{color:var(--teal);}.kick.orange{color:var(--orange);}
+  h2.head{font-size:38px;font-weight:900;line-height:1.22;color:var(--ink);}
+  .dense h2.head{font-size:33px;}
+  .s-dark h2.head{color:#fff;}
+  .sub{font-size:17px;color:var(--gray);line-height:1.6;margin-top:12px;}
+  .s-dark .sub{color:rgba(255,255,255,.78);}
+
+  .ic{border-radius:50%;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;}
+  .ic.teal{background:var(--teal);}.ic.orange{background:var(--orange);}
+  .ic svg{stroke:#fff;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+  .ic{width:54px;height:54px;}.ic svg{width:27px;height:27px;}
+  .ic.lg{width:66px;height:66px;}.ic.lg svg{width:33px;height:33px;}
+
+  .pg{position:absolute;right:26px;bottom:16px;font-size:13px;color:#9fb0b5;}
+  .pg.dark{color:rgba(255,255,255,.45);}
+
+  /* 表紙 */
+  .cover{background:var(--navy);color:#fff;padding:0;}
+  .cover .inner{position:relative;z-index:2;padding:90px 88px;height:100%;display:flex;flex-direction:column;justify-content:center;}
+  .cover h1{font-size:60px;font-weight:900;line-height:1.15;}
+  .cover .csub{font-size:23px;color:rgba(255,255,255,.82);margin-top:20px;font-weight:500;}
+  .cover .rule{width:300px;height:3px;background:var(--teal);margin:36px 0 32px;}
+  .cover .meta-row{font-size:19px;color:rgba(255,255,255,.92);line-height:2;}
+  .lbl{color:var(--orange);font-weight:800;margin-right:18px;}
+  .cover .staff{font-size:16px;color:rgba(255,255,255,.78);margin-top:28px;}
+  .blob{position:absolute;border-radius:50%;}
+  .cover .b1{width:360px;height:360px;top:-110px;right:-70px;background:#1b3d49;}
+  .cover .b2{width:250px;height:250px;bottom:-90px;right:130px;background:#1a3a45;opacity:.6;}
+
+  .cardrow{display:flex;gap:22px;margin-top:38px;}
+  .card{background:var(--cardlt);border:1px solid #e6edee;border-radius:14px;padding:26px 24px;flex:1;}
+  .card .ic{margin-bottom:18px;}
+  .card h3{font-size:21px;font-weight:800;color:var(--ink);margin-bottom:10px;}
+  .card p{font-size:15px;color:var(--gray);line-height:1.55;}
+  .lead{font-size:21px;font-weight:500;color:var(--ink);margin-top:6px;}
+  .lead b{color:var(--teal);font-weight:800;}
+
+  /* intro 分割 */
+  .s-split{padding:0;}
+  .intro-left{position:absolute;left:0;top:0;bottom:0;right:400px;padding:52px 56px;display:flex;flex-direction:column;justify-content:center;}
+  .intro-left p.para{font-size:18px;color:#3f5158;line-height:1.85;margin-bottom:16px;}
+  .intro-left p.para b{color:var(--teal);font-weight:800;}
+  .stat{display:flex;align-items:center;gap:26px;background:var(--cardlt);border:1px solid #e6edee;border-radius:14px;padding:24px 30px;margin-top:12px;}
+  .stat .big{font-size:60px;font-weight:900;color:var(--orange);line-height:1;flex:0 0 auto;}
+  .stat .st-t{font-size:19px;font-weight:800;color:var(--ink);margin-bottom:8px;}
+  .stat .st-d{font-size:14px;color:var(--gray);line-height:1.55;}
+  .intro-right{position:absolute;right:0;top:0;bottom:0;width:400px;background:var(--navy);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;}
+  .intro-right .blobr{width:300px;height:300px;top:-90px;right:-80px;background:#1b3d49;}
+  .intro-right .ava{width:128px;height:128px;border-radius:50%;background:var(--teal);display:flex;align-items:center;justify-content:center;margin-bottom:24px;z-index:2;}
+  .intro-right .ava svg{width:60px;height:60px;stroke:#fff;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+  .intro-right .nm{font-size:29px;font-weight:900;z-index:2;}
+  .intro-right .role{font-size:15px;color:rgba(255,255,255,.78);text-align:center;line-height:1.8;margin-top:12px;z-index:2;}
+
+  /* setup */
+  .steps{display:flex;align-items:stretch;margin-top:34px;}
+  .step{flex:1;background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:22px 18px;}
+  .step .num{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:21px;font-weight:900;margin-bottom:14px;}
+  .step .num.teal{background:var(--teal);}.step .num.orange{background:var(--orange);}
+  .step h4{font-size:18px;font-weight:800;color:var(--ink);margin-bottom:8px;}
+  .step p{font-size:13.5px;color:var(--gray);line-height:1.5;}
+  .arrow{display:flex;align-items:center;padding:0 8px;color:var(--teal);}
+  .arrow svg{width:24px;height:24px;stroke:currentColor;stroke-width:2.4;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+  .tipbar{display:flex;align-items:center;gap:18px;background:#fbf1de;border-radius:14px;padding:18px 26px;margin-top:30px;}
+  .tipbar .ic{width:44px;height:44px;}.tipbar .ic svg{width:22px;height:22px;}
+  .tipbar p{font-size:15px;color:#7a5a22;line-height:1.5;}
+  .tipbar p b{color:var(--orange);font-weight:800;margin-right:14px;}
+
+  /* 共通設定（ROLE PLAY） */
+  .roledecl{background:linear-gradient(100deg,var(--teal),var(--teal-d));color:#fff;border-radius:14px;padding:20px 28px;font-size:23px;font-weight:800;line-height:1.5;margin-top:20px;display:flex;align-items:center;gap:16px;}
+  .roledecl .ic{width:46px;height:46px;background:rgba(255,255,255,.18);}.roledecl .ic svg{width:24px;height:24px;}
+  .setgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px 28px;margin-top:24px;}
+  .setrow{display:flex;gap:16px;align-items:baseline;border-bottom:1px solid var(--line);padding-bottom:13px;}
+  .setrow .k{font-size:14.5px;font-weight:800;color:var(--teal);min-width:88px;flex:0 0 auto;}
+  .setrow .v{font-size:17px;color:var(--ink);font-weight:700;}
+  .setrow.full{grid-column:1 / -1;}
+  .setrow.role{background:#fbf1de;border:1px solid #f0dcb4;border-radius:10px;padding:15px 20px;border-bottom:none;}
+  .setrow.role .k{color:var(--orange);}.setrow.role .v{font-size:18px;}
+
+  /* roadmap */
+  .flow{display:flex;align-items:stretch;margin-top:26px;}
+  .fstep{flex:1;background:var(--cardlt);border:1px solid #e6edee;border-radius:14px;padding:22px 16px;text-align:center;}
+  .fstep .fn{width:44px;height:44px;border-radius:50%;color:#fff;font-weight:900;font-size:20px;margin:0 auto 14px;display:flex;align-items:center;justify-content:center;}
+  .fn.teal{background:var(--teal);}.fn.orange{background:var(--orange);}
+  .fstep h4{font-size:17px;font-weight:800;color:var(--ink);margin-bottom:10px;line-height:1.35;}
+  .fstep .ft{font-size:12.5px;color:var(--gray);line-height:1.6;}
+  .fstep .ft b{color:var(--teal);font-weight:800;}
+  .farrow{display:flex;align-items:center;padding:0 6px;color:var(--teal);}
+  .farrow svg{width:22px;height:22px;stroke:currentColor;stroke-width:2.4;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+  .arcband{display:flex;align-items:center;justify-content:center;gap:20px;margin-top:28px;background:var(--navy);color:#fff;border-radius:14px;padding:20px 28px;font-size:18px;font-weight:700;}
+  .arcband .pill{background:var(--orange);color:#fff;font-size:14px;font-weight:800;padding:6px 14px;border-radius:999px;}
+  .arcband .a-s{color:rgba(255,255,255,.92);}
+  .arcband .a-s b{color:#7fd3d3;}
+
+  /* situation + material */
+  .situation{display:flex;gap:14px;align-items:center;background:#eaf5f5;border-left:6px solid var(--teal);border-radius:0 12px 12px 0;padding:15px 20px;margin-top:16px;}
+  .situation .tag{background:var(--teal);color:#fff;font-size:12px;font-weight:800;padding:5px 11px;border-radius:6px;flex:0 0 auto;}
+  .situation p{font-size:17px;color:#2c4046;line-height:1.5;font-weight:700;}
+  .matbox{margin-top:16px;border:1.5px solid var(--line);border-radius:12px;overflow:hidden;}
+  .mathead{display:flex;align-items:center;justify-content:space-between;background:#f3f8f8;padding:11px 18px;border-bottom:1px solid var(--line);}
+  .mathead .mt{font-size:15px;font-weight:800;color:var(--ink);}
+  .matbody{padding:16px 22px;font-size:14px;color:#34454b;line-height:1.7;max-height:352px;overflow:auto;}
+  .matbody.sm{font-size:13.5px;line-height:1.65;}
+  .matbody .cl{font-weight:800;color:var(--ink);}
+
+  /* copy ボタン */
+  .copybtn{display:inline-flex;align-items:center;gap:9px;border:none;cursor:pointer;font-family:inherit;font-weight:800;border-radius:10px;transition:.15s;color:#fff;}
+  .copybtn svg{stroke:#fff;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+  .copybtn.sm{background:var(--teal);font-size:13px;padding:8px 14px;}
+  .copybtn.sm svg{width:16px;height:16px;}
+  .copybtn.big{background:var(--orange);font-size:18px;padding:16px 22px;width:100%;justify-content:center;box-shadow:0 6px 16px rgba(226,150,46,.32);margin-top:16px;}
+  .copybtn.big svg{width:22px;height:22px;}
+  .copybtn.done{background:var(--teal)!important;box-shadow:none;}
+  .copybtn:hover{filter:brightness(1.06);}
+
+  /* prompt slide */
+  .exgrid{display:grid;grid-template-columns:1.22fr 1fr;gap:30px;margin-top:22px;align-items:start;}
+  .pcard{background:var(--navy);border-radius:16px;padding:24px 26px;color:#fff;}
+  .ptag{display:inline-flex;align-items:center;gap:8px;background:var(--orange);font-size:13px;font-weight:800;padding:6px 13px;border-radius:999px;margin-bottom:16px;color:#fff;}
+  .ptag svg{width:15px;height:15px;stroke:#fff;stroke-width:2;fill:none;}
+  .prompt{display:flex;gap:14px;}
+  .prompt .bar{width:4px;background:var(--teal);border-radius:4px;flex:0 0 auto;}
+  .prompt .ptxt{font-size:17px;line-height:1.7;font-weight:500;color:#eef6f6;}
+  .pembed{margin-top:14px;font-size:13px;color:#9fc3c3;border-top:1px dashed rgba(255,255,255,.2);padding-top:12px;}
+  .proc .mh{font-size:16px;font-weight:900;color:var(--ink);display:flex;align-items:center;gap:9px;margin-bottom:16px;}
+  .proc .mh::before{content:"";width:12px;height:12px;border-radius:3px;background:var(--orange);}
+  .pstep{margin-bottom:16px;}
+  .pbadge{display:inline-block;font-size:13px;font-weight:800;color:#fff;padding:5px 13px;border-radius:999px;margin-bottom:7px;}
+  .pbadge.teal{background:var(--teal);}.pbadge.orange{background:var(--orange);}
+  .pstep p{font-size:14.5px;color:var(--gray);line-height:1.55;}
+  .ptip{background:#fbf1de;border-radius:10px;padding:13px 16px;font-size:14px;color:#7a5a22;line-height:1.55;font-weight:600;}
+
+  /* safety */
+  .scardrow{display:flex;gap:22px;margin-top:38px;}
+  .scard{flex:1;background:var(--cardlt);border:1px solid #e6edee;border-radius:14px;padding:28px 26px;position:relative;overflow:hidden;}
+  .scard .gnum{position:absolute;top:8px;right:20px;font-size:60px;font-weight:900;color:#dde6e7;}
+  .scard .ic{margin-bottom:20px;}
+  .scard h3{font-size:21px;font-weight:800;color:var(--ink);margin-bottom:13px;}
+  .scard p{font-size:15px;color:var(--gray);line-height:1.6;}
+
+  /* thank you */
+  .ty .blobT{width:340px;height:340px;top:-120px;right:-90px;background:#1b3d49;}
+  .ty .blobT2{width:240px;height:240px;bottom:-110px;left:-70px;background:#1a3a45;}
+  .ty-inner{position:relative;z-index:2;}
+  .ty h2{font-size:44px;font-weight:900;line-height:1.25;}
+  .ty .tysub{font-size:19px;color:rgba(255,255,255,.8);line-height:1.7;margin-top:16px;}
+  .tycard{display:flex;align-items:center;gap:26px;background:var(--navy2);border-radius:16px;padding:28px 34px;margin-top:34px;position:relative;z-index:2;}
+  .tycard .ic{width:76px;height:76px;}.tycard .ic svg{width:37px;height:37px;}
+  .tycard h3{font-size:24px;font-weight:900;color:#fff;margin-bottom:8px;}
+  .tycard .shop{font-size:18px;font-weight:800;color:var(--orange);margin-bottom:6px;}
+  .tycard p{font-size:15px;color:rgba(255,255,255,.74);line-height:1.55;}
+  .tyfoot{position:absolute;left:64px;bottom:34px;font-size:14px;color:rgba(255,255,255,.6);z-index:2;}
+  .tyfoot b{color:rgba(255,255,255,.85);font-weight:700;margin-right:18px;}
+
+  /* ナビ */
+  .navbtns{position:fixed;bottom:10px;left:50%;transform:translateX(-50%);display:flex;gap:10px;z-index:50;}
+  .navbtns button{width:38px;height:38px;border-radius:50%;border:none;background:rgba(255,255,255,.14);color:#fff;font-size:20px;cursor:pointer;line-height:1;}
+  .navbtns button:hover{background:rgba(255,255,255,.28);}
+  .hint{position:fixed;right:12px;bottom:8px;font-size:11px;color:rgba(255,255,255,.28);z-index:50;}
+  .toast{position:fixed;top:18px;left:50%;transform:translateX(-50%) translateY(-80px);background:var(--teal);color:#fff;font-weight:800;font-size:15px;padding:12px 22px;border-radius:999px;z-index:99;opacity:0;transition:.3s;box-shadow:0 8px 24px rgba(0,0,0,.25);}
+  .toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-pen" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></symbol>
+  <symbol id="i-file" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"/><path d="M14 2v5h5"/><path d="M16 13H8M16 17H8M10 9H8"/></symbol>
+  <symbol id="i-msg" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></symbol>
+  <symbol id="i-table" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 3v18M3 9h18M3 15h18"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4M12 17h.01"/></symbol>
+  <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></symbol>
+  <symbol id="i-monitor" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></symbol>
+  <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></symbol>
+  <symbol id="i-flag" viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><path d="M4 22v-7"/></symbol>
+  <symbol id="i-fork" viewBox="0 0 24 24"><path d="M3 2v7a2 2 0 0 0 2 2h0a2 2 0 0 0 2-2V2M5 2v20M21 15V2a4 4 0 0 0-4 4v5a2 2 0 0 0 2 2h2v7"/></symbol>
+  <symbol id="i-clip" viewBox="0 0 24 24"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+</svg>
+
+<div class="stage" id="stage">
+
+  <!-- 1. 表紙 -->
+  <section class="slide active cover">
+    <span class="blob b1"></span><span class="blob b2"></span>
+    <div class="inner">
+      <div class="kick orange">第155回 例会 ・ AI実践ワークショップ</div>
+      <h1>社長のための生成AI入門</h1>
+      <div class="csub">〜 “仙台市の担当者”になって、AIを実際に動かす2時間 〜</div>
+      <div class="rule"></div>
+      <div class="meta-row"><span class="lbl">日時</span>令和8年6月25日(木) 18:00〜20:00</div>
+      <div class="meta-row"><span class="lbl">会場</span>エル・パーク仙台 / セミナー一室</div>
+      <div class="staff"><span class="lbl">担当</span>一般社団法人とんペディア 理事 ・ 東北大学経済学部4年　荒木 達亘</div>
+    </div>
+    <div class="pg dark">01</div>
+  </section>
+
+  <!-- 2. 今日のゴール -->
+  <section class="slide s-white">
+    <div class="kick teal">TODAY'S GOAL</div>
+    <h2 class="head">今日のゴール</h2>
+    <div class="lead" style="margin-top:16px;">「自分のパソコンで <b style="color:var(--orange)">“できた！”</b> を持ち帰る」2時間にします。</div>
+    <div class="cardrow">
+      <div class="card"><span class="ic teal lg"><svg><use href="#i-monitor"/></svg></span><h3>触ってみる</h3><p>見るだけでなく、ご自身のPCで実際に打ち込む時間をたっぷり取ります。</p></div>
+      <div class="card"><span class="ic orange lg"><svg><use href="#i-target"/></svg></span><h3>仕事に効く</h3><p>「これ、うちの仕事に使える」を、市役所の仕事を題材に体感します。</p></div>
+      <div class="card"><span class="ic teal lg"><svg><use href="#i-shield"/></svg></span><h3>安全に使う</h3><p>機密情報の扱いやAIの“クセ”も押さえ、安心して使い始められます。</p></div>
+    </div>
+    <div class="pg">02</div>
+  </section>
+
+  <!-- 3. ごあいさつ -->
+  <section class="slide s-split">
+    <div class="intro-left">
+      <div class="kick teal">INTRODUCTION</div>
+      <h2 class="head" style="margin-bottom:24px;">担当のごあいさつ</h2>
+      <p class="para">学部1年のとき峯岸社長にお声がけいただき、約3年ぶりにこの会へ戻ってまいりました。</p>
+      <p class="para">学生時代を通じてプロダクト開発を続け、東北大学向けサービス <b>「とんペディア」</b> を立ち上げました。</p>
+      <div class="stat">
+        <div class="big">約95%</div>
+        <div><div class="st-t">新入生の約95%が利用</div><div class="st-d">学生の“当たり前”になるまで育てた経験から、生成AIをできる限り分かりやすくお伝えします。</div></div>
+      </div>
+    </div>
+    <div class="intro-right">
+      <span class="blob blobr"></span>
+      <div class="ava"><svg><use href="#i-user"/></svg></div>
+      <div class="nm">荒木 達亘</div>
+      <div class="role">一般社団法人とんペディア 理事<br>東北大学 経済学部 4年</div>
+    </div>
+    <div class="pg">03</div>
+  </section>
+
+  <!-- 4. 生成AIって何 -->
+  <section class="slide s-white">
+    <div class="kick teal">WHAT IS IT?</div>
+    <h2 class="head">生成AIって、何ができるの？</h2>
+    <div class="lead">ひとことで言えば、<b>「文章で頼める、超優秀なアシスタント」</b>。</div>
+    <div class="sub">難しい仕組みは覚えなくてOK。話しかけるように頼むだけで、こんな仕事を手伝ってくれます。</div>
+    <div class="cardrow">
+      <div class="card"><span class="ic teal lg"><svg><use href="#i-pen"/></svg></span><h3>書く</h3><p>メール・お礼状・挨拶文の下書き</p></div>
+      <div class="card"><span class="ic teal lg"><svg><use href="#i-file"/></svg></span><h3>まとめる</h3><p>長い資料や契約書を3行に要約</p></div>
+      <div class="card"><span class="ic teal lg"><svg><use href="#i-help"/></svg></span><h3>備える</h3><p>厳しい質問の想定問答づくり</p></div>
+      <div class="card"><span class="ic teal lg"><svg><use href="#i-table"/></svg></span><h3>整理する</h3><p>バラバラの意見を一枚の表に</p></div>
+    </div>
+    <div class="pg">04</div>
+  </section>
+
+  <!-- 5. アカウント開設 -->
+  <section class="slide s-white">
+    <div class="kick teal">STEP 0 ・ まずは一緒に</div>
+    <h2 class="head">ChatGPT アカウントを開設しよう</h2>
+    <div class="sub">全員でアカウントを作るところからスタート。つまずきやすい所は隣で一緒に進めるのでご安心ください。</div>
+    <div class="steps">
+      <div class="step"><div class="num teal">1</div><h4>サイトを開く</h4><p>ブラウザで「chatgpt.com」を開く</p></div>
+      <div class="arrow"><svg><use href="#i-arrow"/></svg></div>
+      <div class="step"><div class="num teal">2</div><h4>メールで登録</h4><p>メールアドレスとパスワードを入力</p></div>
+      <div class="arrow"><svg><use href="#i-arrow"/></svg></div>
+      <div class="step"><div class="num teal">3</div><h4>認証する</h4><p>届いたメールのリンクをクリック</p></div>
+      <div class="arrow"><svg><use href="#i-arrow"/></svg></div>
+      <div class="step"><div class="num orange">4</div><h4>完了 → 入力!</h4><p>画面下の欄に話しかけてみる</p></div>
+    </div>
+    <div class="tipbar"><span class="ic orange"><svg><use href="#i-check"/></svg></span><p><b>持ち物</b>ノートPC（普段のものでOK）／ メールアドレスとパスワードが分かる状態だとスムーズ。確認メールは「迷惑メール」に入ることがあります。</p></div>
+    <div class="pg">05</div>
+  </section>
+
+  <!-- 6. 共通設定 ROLE PLAY -->
+  <section class="slide s-white">
+    <div class="kick orange">ROLE PLAY ・ 共通設定</div>
+    <h2 class="head">今日から、あなたは仙台市の担当者です</h2>
+    <div class="roledecl"><span class="ic"><svg><use href="#i-flag"/></svg></span>「今日から皆さんは、この事業を任された “仙台市の担当者” です。」</div>
+    <div class="setgrid">
+      <div class="setrow full"><span class="k">事業名</span><span class="v">（仮称）仙台市新音楽ホール整備事業</span></div>
+      <div class="setrow"><span class="k">場所</span><span class="v">青葉区中心部の市有地</span></div>
+      <div class="setrow"><span class="k">規模</span><span class="v">大ホール2,000席＋小ホール500席</span></div>
+      <div class="setrow"><span class="k">総事業費</span><span class="v">約350億円（市の負担は約半分）</span></div>
+      <div class="setrow"><span class="k">完成予定</span><span class="v">令和12年度</span></div>
+      <div class="setrow role full"><span class="k">あなたの役</span><span class="v">仙台市 文化観光局 音楽ホール整備推進室の担当者</span></div>
+    </div>
+    <div class="pg">06</div>
+  </section>
+
+  <!-- 7. 4つの実践の流れ -->
+  <section class="slide s-white">
+    <div class="kick teal">WORKSHOP ・ 全体像</div>
+    <h2 class="head">4つの実践で、AIを使い倒す</h2>
+    <div class="sub">同じ事業を題材に、一本の物語として進みます。まず「自分でも打てた」、次に「ここまでできるのか」。</div>
+    <div class="flow">
+      <div class="fstep"><div class="fn teal">1</div><h4>お礼メール<br>を書く</h4><div class="ft">実演5分<br><b>＋ 演習7分</b></div></div>
+      <div class="farrow"><svg><use href="#i-arrow"/></svg></div>
+      <div class="fstep"><div class="fn teal">2</div><h4>資料を要約・<br>リスク出し</h4><div class="ft">実演5分<br><b>＋ 演習7分</b></div></div>
+      <div class="farrow"><svg><use href="#i-arrow"/></svg></div>
+      <div class="fstep"><div class="fn teal">3</div><h4>想定問答<br>（Q&amp;A）</h4><div class="ft">実演5分<br><b>＋ 演習7分</b></div></div>
+      <div class="farrow"><svg><use href="#i-arrow"/></svg></div>
+      <div class="fstep"><div class="fn orange">4</div><h4>賛成・反対の<br>論点整理表</h4><div class="ft">実演5分<br><b>＋ 演習9分</b></div></div>
+    </div>
+    <div class="arcband">
+      <span class="pill">メイン実践 約50分</span>
+      <span class="a-s"><b>①②</b> 自分でも打てた（成功体験）　→　<b>③④</b> ここまでできるのか（驚き）</span>
+    </div>
+    <div class="pg">07</div>
+  </section>
+
+  <!-- 8. 実践① 状況と素材 -->
+  <section class="slide s-white dense">
+    <div class="kick orange">実践① ・ 状況と素材</div>
+    <h2 class="head">① お礼メールを書く</h2>
+    <div class="situation"><span class="tag">読み上げ</span><p>視察に協力してくれた地元企業の社長から、丁寧なメールが届きました。担当者として、お礼の返信を書きましょう。</p></div>
+    <div class="matbox">
+      <div class="mathead"><span class="mt">📩 届いたメール（このまま素材に使います）</span><button class="copybtn sm" data-k="ex1m"><svg><use href="#i-clip"/></svg>素材をコピー</button></div>
+      <div class="matbody">
+        件名：先日の現地視察の御礼<br><br>
+        仙台市 文化観光局　音楽ホール整備推進室　ご担当者様<br><br>
+        お世話になっております。株式会社山田工業の代表の山田でございます。<br><br>
+        先日は、新音楽ホール整備予定地の視察にあたり、お忙しい中ご案内いただき誠にありがとうございました。地元企業として、この事業が仙台の文化と賑わいにつながることを心より期待しております。<br><br>
+        弊社でも、音響設備や地域連携の面で何かお力になれることがあればと考えております。今後、意見交換の機会を頂戴できれば幸いです。<br><br>
+        まずは御礼まで申し上げます。<br><br>
+        山田工業　山田太郎
+      </div>
+    </div>
+    <div class="pg">08</div>
+  </section>
+
+  <!-- 9. 実践① プロンプト -->
+  <section class="slide s-white dense">
+    <div class="kick orange">実践① ・ プロンプト &amp; 進め方</div>
+    <h2 class="head">① そのままコピーして、AIに頼む</h2>
+    <div class="exgrid">
+      <div>
+        <div class="pcard">
+          <span class="ptag"><svg><use href="#i-clip"/></svg>コピペ用プロンプト</span>
+          <div class="prompt"><div class="bar"></div><div class="ptxt">あなたは仙台市の新音楽ホール整備の担当者です。地元企業の社長から下のメールが届きました。丁寧で温かく、今後も連携していきたい気持ちが伝わる返信を、300字くらいで書いてください。かしこまりすぎず、でも失礼のないトーンでお願いします。</div></div>
+          <div class="pembed">＋【届いたメール】＝前のスライドの本文（コピー時に自動で入ります）</div>
+        </div>
+        <button class="copybtn big" data-k="ex1p"><svg><use href="#i-clip"/></svg>プロンプトをまるごとコピー（素材も入っています）</button>
+      </div>
+      <div class="proc">
+        <div class="mh">進め方</div>
+        <div class="pstep"><span class="pbadge teal">実演 5分</span><p>担当者として、上のプロンプトで返信を作って見せる。</p></div>
+        <div class="pstep"><span class="pbadge orange">演習 7分</span><p>各自、同じプロンプトを自分のPCで打って返信を作る。</p></div>
+        <div class="ptip">💡 打ち終わったら「<b>もっと丁寧に直して</b>」と追い打ち。何度でも直せることを体感。</div>
+      </div>
+    </div>
+    <div class="pg">09</div>
+  </section>
+
+  <!-- 10. 実践② 状況と素材 -->
+  <section class="slide s-white dense">
+    <div class="kick orange">実践② ・ 状況と素材</div>
+    <h2 class="head">② 長い資料を要約・リスク出し</h2>
+    <div class="situation"><span class="tag">読み上げ</span><p>契約書が送られてきました。全部読む時間はありません。担当者として、要点と注意点をつかみましょう。</p></div>
+    <div class="matbox">
+      <div class="mathead"><span class="mt">📄 基本協定書（抜粋）</span><button class="copybtn sm" data-k="ex2m"><svg><use href="#i-clip"/></svg>素材をコピー</button></div>
+      <div class="matbody sm">
+        <span class="cl">（仮称）仙台市新音楽ホール整備事業　基本協定書（抜粋）</span><br><br>
+        <b>第3条（事業費の負担）</b>　本事業に係る総事業費は約350億円とし、市と事業者がそれぞれ別表に定める割合により負担する。ただし、物価変動その他やむを得ない事由により事業費に著しい増加が生じた場合、市は追加の費用を負担することがある。<br><br>
+        <b>第5条（工期）</b>　事業者は令和12年3月31日までに施設を完成させ、市に引き渡すものとする。事業者の責に帰すべき事由により完成が遅延した場合、事業者は遅延日数に応じた違約金を市に支払う。<br><br>
+        <b>第8条（協定の解除）</b>　市は、事業者が正当な理由なく事業の継続が困難と認められる場合、本協定を解除することができる。この場合、市は既に支出した費用の返還を事業者に請求できる。<br><br>
+        <b>第11条（リスク分担）</b>　天災地変等の不可抗力により生じた損害は、市と事業者が協議のうえ負担を定める。
+      </div>
+    </div>
+    <div class="pg">10</div>
+  </section>
+
+  <!-- 11. 実践② プロンプト -->
+  <section class="slide s-white dense">
+    <div class="kick orange">実践② ・ プロンプト &amp; 進め方</div>
+    <h2 class="head">② 要点と注意点を、一気につかむ</h2>
+    <div class="exgrid">
+      <div>
+        <div class="pcard">
+          <span class="ptag"><svg><use href="#i-clip"/></svg>コピペ用プロンプト</span>
+          <div class="prompt"><div class="bar"></div><div class="ptxt">あなたは仙台市の新音楽ホール整備の担当者です。下の協定書について、(1)忙しい上司向けに3行で要約し、(2)市にとって不利になりそう・注意すべき点を3つ挙げ、(3)難しい専門用語を中学生にも分かる言葉で言い換えてください。</div></div>
+          <div class="pembed">＋【協定書】＝前のスライドの本文（コピー時に自動で入ります）</div>
+        </div>
+        <button class="copybtn big" data-k="ex2p"><svg><use href="#i-clip"/></svg>プロンプトをまるごとコピー（素材も入っています）</button>
+      </div>
+      <div class="proc">
+        <div class="mh">進め方</div>
+        <div class="pstep"><span class="pbadge teal">実演 5分</span><p>第3条「市が追加負担することがある」など、AIがリスクを拾う様子を見せる。</p></div>
+        <div class="pstep"><span class="pbadge orange">演習 7分</span><p>同じ書類でも、手元の自分の書類を貼ってもOK。一気に自分ごとに。</p></div>
+        <div class="ptip">💡 大事な数字は、必ず元の書類で確認（AIの要約をうのみにしない）。</div>
+      </div>
+    </div>
+    <div class="pg">11</div>
+  </section>
+
+  <!-- 12. 実践③ 状況と素材 -->
+  <section class="slide s-white dense">
+    <div class="kick orange">実践③ ・ 状況と素材</div>
+    <h2 class="head">③ 想定問答（Q&amp;A）をつくる</h2>
+    <div class="situation"><span class="tag">読み上げ</span><p>来週、市民説明会があります。反対派から厳しい質問が飛んできます。先回りして備えましょう。</p></div>
+    <div class="matbox">
+      <div class="mathead"><span class="mt">🗒 概要メモ</span><button class="copybtn sm" data-k="ex3m"><svg><use href="#i-clip"/></svg>素材をコピー</button></div>
+      <div class="matbody">
+        <span class="cl">新音楽ホール整備事業　概要メモ</span><br><br>
+        ・場所：青葉区中心部の市有地／規模：大ホール2,000席・小ホール500席<br><br>
+        ・総事業費：約350億円（うち市の負担はおよそ半分）／完成予定：令和12年度<br><br>
+        ・目的：老朽化した既存ホールの代替、仙台の文化拠点づくり、コンサート誘致による賑わい創出<br><br>
+        ・主な懸念：多額の税金投入、人口減少下での需要、毎年の維持管理コスト、福祉・防災など他の課題との兼ね合い
+      </div>
+    </div>
+    <div class="pg">12</div>
+  </section>
+
+  <!-- 13. 実践③ プロンプト -->
+  <section class="slide s-white dense">
+    <div class="kick orange">実践③ ・ プロンプト &amp; 進め方</div>
+    <h2 class="head">③ 厳しい質問に、先回りして備える</h2>
+    <div class="exgrid">
+      <div>
+        <div class="pcard">
+          <span class="ptag"><svg><use href="#i-clip"/></svg>コピペ用プロンプト</span>
+          <div class="prompt"><div class="bar"></div><div class="ptxt">あなたは仙台市の新音楽ホール整備の担当者です。来週、市民説明会があります。下の概要をもとに、建設に反対の立場の市民から出そうな厳しい質問を10個予想し、それぞれに誠実で分かりやすい回答案を付けてください。回答は、ごまかさず、相手の不安に寄り添うトーンでお願いします。</div></div>
+          <div class="pembed">＋【概要】＝前のスライドの本文（コピー時に自動で入ります）</div>
+        </div>
+        <button class="copybtn big" data-k="ex3p"><svg><use href="#i-clip"/></svg>プロンプトをまるごとコピー（素材も入っています）</button>
+      </div>
+      <div class="proc">
+        <div class="mh">進め方</div>
+        <div class="pstep"><span class="pbadge teal">実演 5分</span><p>10個の質問と回答が一気に出る“見せ場”。</p></div>
+        <div class="pstep"><span class="pbadge orange">演習 7分</span><p>出てきた質問を1つ選び「この回答、もっと簡単な言葉で」と直す。</p></div>
+        <div class="ptip">💡 株主総会や交渉の前にも使える——「責められる側に先回りして備える」使い方。</div>
+      </div>
+    </div>
+    <div class="pg">13</div>
+  </section>
+
+  <!-- 14. 実践④ 状況と素材 -->
+  <section class="slide s-white dense">
+    <div class="kick orange">実践④ ・ 状況と素材</div>
+    <h2 class="head">④ 賛成・反対の論点整理表</h2>
+    <div class="situation"><span class="tag">読み上げ</span><p>これまでの議論を、一枚の表にまとめて上司に出します。前回の皆さんの議論が、そのまま材料です。</p></div>
+    <div class="matbox">
+      <div class="mathead"><span class="mt">🗒 前回ディスカッションのメモ</span><button class="copybtn sm" data-k="ex4m"><svg><use href="#i-clip"/></svg>素材をコピー</button></div>
+      <div class="matbody sm">
+        <span class="cl">前回ディスカッション　メモ（音楽ホールについて考える 完結編）</span><br><br>
+        ・「350億は高すぎる。今の仙台に本当に必要か」<br>
+        ・「今のホールは老朽化していて、大きな公演を呼べていない」<br>
+        ・「人口が減っていく中で、客が入るのか」<br>
+        ・「文化への投資は街の格を上げる。若い人が定着する理由になる」<br>
+        ・「維持費が毎年かかる。赤字施設になったら誰が責任を取るのか」<br>
+        ・「東京や大阪のオーケストラを呼べれば、周辺の飲食・宿泊にもお金が落ちる」<br>
+        ・「福祉や除雪にもっと予算を回すべきでは」<br>
+        ・「子どもが本物の音楽に触れる教育的価値がある」<br>
+        ・「中心部すぎて駐車場が足りないのでは」<br>
+        ・「駅から近いのは強み。公共交通で来られる」
+      </div>
+    </div>
+    <div class="pg">14</div>
+  </section>
+
+  <!-- 15. 実践④ プロンプト -->
+  <section class="slide s-white dense">
+    <div class="kick orange">実践④ ・ プロンプト &amp; 進め方</div>
+    <h2 class="head">④ バラバラの意見を、一枚の表に</h2>
+    <div class="exgrid">
+      <div>
+        <div class="pcard">
+          <span class="ptag"><svg><use href="#i-clip"/></svg>コピペ用プロンプト</span>
+          <div class="prompt"><div class="bar"></div><div class="ptxt">あなたは仙台市の新音楽ホール整備の担当者です。下の市民ディスカッションのメモから、賛成意見と反対意見を「論点ごと」に整理して、表にまとめてください。表の列は「論点／賛成の意見／反対の意見」にしてください。</div></div>
+          <div class="pembed">＋【メモ】＝前のスライドの本文（コピー時に自動で入ります）</div>
+        </div>
+        <button class="copybtn big" data-k="ex4p"><svg><use href="#i-clip"/></svg>プロンプトをまるごとコピー（素材も入っています）</button>
+      </div>
+      <div class="proc">
+        <div class="mh">進め方</div>
+        <div class="pstep"><span class="pbadge teal">実演 5分</span><p>発言が「お金・需要・街づくり・立地」などの論点に整理される様子を見せる。</p></div>
+        <div class="pstep"><span class="pbadge orange">演習 9分</span><p>表が出たら「この表をもとに、A4一枚の報告書にして」まで続ける。</p></div>
+        <div class="ptip">💡 ここで“嘘の数字”が出たら、そのまま次の「安全に使う」へ。</div>
+      </div>
+    </div>
+    <div class="pg">15</div>
+  </section>
+
+  <!-- 16. 安全に使う -->
+  <section class="slide s-white">
+    <div class="kick orange">SAFETY</div>
+    <h2 class="head">安全に使うための3つの約束</h2>
+    <div class="sub">便利だからこそ、ここだけは押さえる。リスクを知れば、安心して使いこなせます。</div>
+    <div class="scardrow">
+      <div class="scard"><span class="gnum">1</span><span class="ic orange lg"><svg><use href="#i-shield"/></svg></span><h3>機密情報は入れない</h3><p>顧客名簿や未公開情報など、外に出せない情報は入力しない。</p></div>
+      <div class="scard"><span class="gnum">2</span><span class="ic orange lg"><svg><use href="#i-alert"/></svg></span><h3>AIは時々“嘘”をつく</h3><p>もっともらしく数字を間違えることがある。内容は必ず確認する。</p></div>
+      <div class="scard"><span class="gnum">3</span><span class="ic orange lg"><svg><use href="#i-user"/></svg></span><h3>最後は人が判断する</h3><p>AIはあくまで道具。決定と責任は人が持つ。</p></div>
+    </div>
+    <div class="pg">16</div>
+  </section>
+
+  <!-- 17. まとめ＆懇親会 -->
+  <section class="slide s-dark ty">
+    <span class="blob blobT"></span><span class="blob blobT2"></span>
+    <div class="ty-inner">
+      <div class="kick orange">THANK YOU</div>
+      <h2 class="head" style="font-size:44px;">生成AIは、思ったより身近な道具です。</h2>
+      <div class="tysub">今日「仙台市の担当者」として動かしたAIは、明日の社長業でもそのまま使えます。分からないことは、いつでも気軽に。</div>
+    </div>
+    <div class="tycard">
+      <span class="ic orange"><svg><use href="#i-fork"/></svg></span>
+      <div>
+        <h3>懇親会も、お楽しみに！</h3>
+        <div class="shop">創作と短角牛 「ジウブ」</div>
+        <p>最先端のAI体験のあとは、美味しい短角牛を囲んでざっくばらんに。</p>
+      </div>
+    </div>
+    <div class="tyfoot"><b>担当　荒木 達亘</b>araki.tatsuhiro@gmail.com</div>
+    <div class="pg dark">17</div>
+  </section>
+
+</div>
+
+<div class="navbtns"><button id="prev">‹</button><button id="next">›</button></div>
+<div class="hint">← → / スペース で進む　・　F で全画面</div>
+<div class="toast" id="toast">✓ コピーしました！ ChatGPTに貼り付けてください</div>
+
+<script>
+  const stage=document.getElementById('stage');
+  function fit(){const s=Math.min(innerWidth/1280, innerHeight/720);stage.style.transform=`scale(${s})`;}
+  addEventListener('resize',fit);fit();
+
+  const slides=[...document.querySelectorAll('.slide')];
+  let i=0;
+  function show(n){i=Math.max(0,Math.min(slides.length-1,n));slides.forEach((s,k)=>s.classList.toggle('active',k===i));}
+  addEventListener('keydown',e=>{
+    if(['ArrowRight','ArrowDown',' ','PageDown','Enter'].includes(e.key)){e.preventDefault();show(i+1);}
+    else if(['ArrowLeft','ArrowUp','PageUp','Backspace'].includes(e.key)){e.preventDefault();show(i-1);}
+    else if(e.key==='Home'){show(0);}else if(e.key==='End'){show(slides.length-1);}
+    else if(e.key==='f'||e.key==='F'){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();}
+  });
+  document.getElementById('prev').onclick=e=>{e.stopPropagation();show(i-1);};
+  document.getElementById('next').onclick=e=>{e.stopPropagation();show(i+1);};
+  addEventListener('click',e=>{
+    if(e.target.closest('.copybtn,.matbox,.matbody,.pcard,button,a,.navbtns')) return;
+    e.clientX<innerWidth*0.25?show(i-1):show(i+1);
+  });
+
+  /* ===== コピー素材 ===== */
+  const MAT={
+    ex1:`件名：先日の現地視察の御礼
+
+仙台市 文化観光局　音楽ホール整備推進室　ご担当者様
+
+お世話になっております。株式会社山田工業の代表の山田でございます。
+
+先日は、新音楽ホール整備予定地の視察にあたり、お忙しい中ご案内いただき誠にありがとうございました。地元企業として、この事業が仙台の文化と賑わいにつながることを心より期待しております。
+
+弊社でも、音響設備や地域連携の面で何かお力になれることがあればと考えております。今後、意見交換の機会を頂戴できれば幸いです。
+
+まずは御礼まで申し上げます。
+
+山田工業　山田太郎`,
+    ex2:`（仮称）仙台市新音楽ホール整備事業　基本協定書（抜粋）
+
+第3条（事業費の負担）　本事業に係る総事業費は約350億円とし、市と事業者がそれぞれ別表に定める割合により負担する。ただし、物価変動その他やむを得ない事由により事業費に著しい増加が生じた場合、市は追加の費用を負担することがある。
+
+第5条（工期）　事業者は令和12年3月31日までに施設を完成させ、市に引き渡すものとする。事業者の責に帰すべき事由により完成が遅延した場合、事業者は遅延日数に応じた違約金を市に支払う。
+
+第8条（協定の解除）　市は、事業者が正当な理由なく事業の継続が困難と認められる場合、本協定を解除することができる。この場合、市は既に支出した費用の返還を事業者に請求できる。
+
+第11条（リスク分担）　天災地変等の不可抗力により生じた損害は、市と事業者が協議のうえ負担を定める。`,
+    ex3:`新音楽ホール整備事業　概要メモ
+
+・場所：青葉区中心部の市有地／規模：大ホール2,000席・小ホール500席
+・総事業費：約350億円（うち市の負担はおよそ半分）／完成予定：令和12年度
+・目的：老朽化した既存ホールの代替、仙台の文化拠点づくり、コンサート誘致による賑わい創出
+・主な懸念：多額の税金投入、人口減少下での需要、毎年の維持管理コスト、福祉・防災など他の課題との兼ね合い`,
+    ex4:`前回ディスカッション　メモ（音楽ホールについて考える 完結編）
+
+・「350億は高すぎる。今の仙台に本当に必要か」
+・「今のホールは老朽化していて、大きな公演を呼べていない」
+・「人口が減っていく中で、客が入るのか」
+・「文化への投資は街の格を上げる。若い人が定着する理由になる」
+・「維持費が毎年かかる。赤字施設になったら誰が責任を取るのか」
+・「東京や大阪のオーケストラを呼べれば、周辺の飲食・宿泊にもお金が落ちる」
+・「福祉や除雪にもっと予算を回すべきでは」
+・「子どもが本物の音楽に触れる教育的価値がある」
+・「中心部すぎて駐車場が足りないのでは」
+・「駅から近いのは強み。公共交通で来られる」`
+  };
+  const INSTR={
+    ex1:`あなたは仙台市の新音楽ホール整備の担当者です。地元企業の社長から下のメールが届きました。丁寧で温かく、今後も連携していきたい気持ちが伝わる返信を、300字くらいで書いてください。かしこまりすぎず、でも失礼のないトーンでお願いします。
+
+【届いたメール】
+`,
+    ex2:`あなたは仙台市の新音楽ホール整備の担当者です。下の協定書について、(1)忙しい上司向けに3行で要約し、(2)市にとって不利になりそう・注意すべき点を3つ挙げ、(3)難しい専門用語を中学生にも分かる言葉で言い換えてください。
+
+【協定書】
+`,
+    ex3:`あなたは仙台市の新音楽ホール整備の担当者です。来週、市民説明会があります。下の概要をもとに、建設に反対の立場の市民から出そうな厳しい質問を10個予想し、それぞれに誠実で分かりやすい回答案を付けてください。回答は、ごまかさず、相手の不安に寄り添うトーンでお願いします。
+
+【概要】
+`,
+    ex4:`あなたは仙台市の新音楽ホール整備の担当者です。下の市民ディスカッションのメモから、賛成意見と反対意見を「論点ごと」に整理して、表にまとめてください。表の列は「論点／賛成の意見／反対の意見」にしてください。
+
+【メモ】
+`
+  };
+  const COPY={
+    ex1m:MAT.ex1, ex1p:INSTR.ex1+MAT.ex1,
+    ex2m:MAT.ex2, ex2p:INSTR.ex2+MAT.ex2,
+    ex3m:MAT.ex3, ex3p:INSTR.ex3+MAT.ex3,
+    ex4m:MAT.ex4, ex4p:INSTR.ex4+MAT.ex4
+  };
+  const toast=document.getElementById('toast');
+  let tT;
+  function flash(){toast.classList.add('show');clearTimeout(tT);tT=setTimeout(()=>toast.classList.remove('show'),1900);}
+  function fallback(txt){const ta=document.createElement('textarea');ta.value=txt;ta.style.position='fixed';ta.style.top='-1000px';document.body.appendChild(ta);ta.focus();ta.select();try{document.execCommand('copy');}catch(e){}document.body.removeChild(ta);}
+  function doCopy(txt,btn){
+    const ok=()=>{flash();const o=btn.innerHTML;btn.classList.add('done');btn.innerHTML='✓ コピーしました';setTimeout(()=>{btn.innerHTML=o;btn.classList.remove('done');},1900);};
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(ok).catch(()=>{fallback(txt);ok();});}
+    else{fallback(txt);ok();}
+  }
+  document.querySelectorAll('.copybtn').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();doCopy(COPY[b.dataset.k],b);}));
+</script>
+</body>
+</html>
